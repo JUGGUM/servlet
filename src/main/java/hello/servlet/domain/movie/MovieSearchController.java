@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 
 @Controller
 public class MovieSearchController {
+
     @RequestMapping(value = "/movie/search", produces = "application/json")
     public void movieSearch(
             @RequestParam(value = "search", required = false)
@@ -26,7 +27,8 @@ public class MovieSearchController {
         String strResult = "";
         try {
             // URL 설정
-            StringBuilder urlBuilder = new StringBuilder("http://www.smileplace_movie/movie/search");
+            StringBuilder urlBuilder = new StringBuilder(
+                    "http://www.smileplace_movie/movie/search");
 
             // search 변수는 인코딩이 필요하다고 했으므로 그 부분만 인코딩
             urlBuilder.append("?search=" + URLEncoder.encode(search, "UTF-8"));
