@@ -1,17 +1,19 @@
 package hello.servlet.domain.movie;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@Slf4j
 public class MovieSearchController {
 
     @RequestMapping(value = "/movie/search", produces = "application/json")
@@ -27,15 +29,15 @@ public class MovieSearchController {
         String strResult = "";
         try {
             // URL 설정
-            StringBuilder urlBuilder = new StringBuilder(
-                    "http://www.smileplace_movie/movie/search");
 
             // search 변수는 인코딩이 필요하다고 했으므로 그 부분만 인코딩
-            urlBuilder.append("?search=" + URLEncoder.encode(search, "UTF-8"));
-            urlBuilder.append("&api_key=" + api_key);
-            urlBuilder.append("&type=json");
+            String urlBuilder =
+                    "http://www.smileplace_movie/movie/search" + "?search=" + URLEncoder.encode(
+                            search, StandardCharsets.UTF_8)
+                            + "&api_key=" + api_key
+                            + "&type=json";
 
-            URL url = new URL(urlBuilder.toString());
+            URL url = new URL(urlBuilder);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             // Request 형식 설정
@@ -45,7 +47,8 @@ public class MovieSearchController {
             // 응답 데이터 받아오기
             BufferedReader rd;
             if (conn.getResponseCode() >= 200 & conn.getResponseCode() <= 300) {
-                rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                rd = new BufferedReader(new InputStreamReader(conn.getInputStream(),
+                        StandardCharsets.UTF_8));
             } else {
                 rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
             }
@@ -58,7 +61,7 @@ public class MovieSearchController {
             conn.disconnect();
             strResult = result.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("An error occured");
         }
 
         // Response 형식 설정 -> JSON으로 데이터 보내기
