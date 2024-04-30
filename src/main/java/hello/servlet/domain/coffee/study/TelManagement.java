@@ -5,8 +5,8 @@ import lombok.Getter;
 import java.util.*;
 
 /**
- *  Map 실습
- *  */
+ * Map 실습
+ */
 @Getter
 class Phone {
 
@@ -24,6 +24,7 @@ class Phone {
 
 
 public class TelManagement {
+
     //삽입
     public static void insert(HashMap<String, Phone> map) {
         Phone phone;
@@ -46,13 +47,14 @@ public class TelManagement {
         String deletename;
         Scanner sc = new Scanner(System.in);
 
-
         System.out.print("이름>> ");
         deletename = sc.next();
         if (map.containsKey(deletename)) {
             map.remove(deletename);
             System.out.println("삭제가 정상적으로 완료되었습니다.");
-        } else System.out.println(deletename + "은 등록되지 않은 사람입니다.");
+        } else {
+            System.out.println(deletename + "은 등록되지 않은 사람입니다.");
+        }
     }
 
     //찾기
@@ -62,11 +64,13 @@ public class TelManagement {
 
         System.out.print("이름 >> ");
         searchname = s.next();
-        if (map.containsKey(searchname))
-            System.out.println(searchname + " " + map.get(searchname).getAddress() + " "
-                    + map.get(searchname).getTelephone());
-
-        else System.out.println(searchname + "은 등록되지 않은 사람입니다. ");
+        if (map.containsKey(searchname)) {
+            System.out.println(
+                    searchname + " " + map.get(searchname).getAddress() + " " + map.get(searchname)
+                            .getTelephone());
+        } else {
+            System.out.println(searchname + "은 등록되지 않은 사람입니다. ");
+        }
     }
 
     //전체보기
